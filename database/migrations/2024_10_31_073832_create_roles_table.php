@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rooms', function (Blueprint $table) {
-            $table->id('room_id');
-            $table->foreignId('creator_id')->constrained('users', 'user_id'); // người tạo phòng, nếu người tạo rời phòng sẽ xoá phòng
-            $table->string('password')->nullable();
-            $table->integer('room_status');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->id('role_id');
+            $table->string('role_name');
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('roles');
     }
 };

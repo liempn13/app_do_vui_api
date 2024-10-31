@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('friends', function (Blueprint $table) {
-            $table->id('user_id');
-            $table->string('friends_id');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->foreignId('friends_id')->constrained('users', 'user_id');
         });
     }
 

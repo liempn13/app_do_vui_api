@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('question_sets', function (Blueprint $table) {
             $table->id('question_set_id');
+            $table->foreignId('topic_id')->constrained('topics', 'topic_id');
             $table->integer('question_quantity');
         });
     }

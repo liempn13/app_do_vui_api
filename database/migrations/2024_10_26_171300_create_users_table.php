@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('password');
+            $table->bigInteger('level');
+            $table->bigInteger('exp');
+            $table->integer('status');
         });
     }
 

@@ -15,11 +15,9 @@ return new class extends Migration
     {
         Schema::create('room_details', function (Blueprint $table) {
             $table->id();
-            $table->string('topic_id');
-            $table->string('creator_id');
-            $table->string('password');
-            $table->string('room_id');
-            $table->timestamps();
+            $table->foreignId('topic_id')->constrained('topics', 'topic_id');
+            $table->foreignId('opponent_id')->constrained('users', 'user_id');
+            $table->foreignId('room_id')->constrained('rooms', 'room_id');
         });
     }
 

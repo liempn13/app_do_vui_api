@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id('option_id');
             $table->string('option_content');
-            $table->string('question_id');
+            $table->boolean('option_value');
+            $table->foreignId('question_id');
+            $table->foreignId('topic_id');
         });
     }
 

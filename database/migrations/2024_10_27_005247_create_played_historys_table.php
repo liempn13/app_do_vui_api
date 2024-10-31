@@ -15,14 +15,13 @@ return new class extends Migration
     {
         Schema::create('played_historys', function (Blueprint $table) {
             $table->id('ID');
-            $table->string('room_id');
-            $table->string('user_id');
-            $table->string('topic_id');
-            $table->string('question_set_id');
-            $table->string('question_id');
-            $table->string('option_id');
-            $table->string('score');
-            $table->integer('player_quatity');
+            $table->foreignId('room_id')->nullable()->constrained('rooms', 'room_id');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->foreignId('topic_id')->constrained('topics',  'topic_id');
+            $table->foreignId('question_id')->constrained('questions', 'question_id');
+            // $table->foreignId('option_id');
+            $table->bigInteger('score');
+            $table->integer('player_quantity')->default(1);
         });
     }
 
