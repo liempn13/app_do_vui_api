@@ -4,82 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $role = Role::all();
+
+        return response()->json($role);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
     public function show(Role $role)
     {
-        //
+        return Role::findOrFail($role->role_id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Role $role)
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "role_name" => "required|string",
+        ]);
+
+        $newRole = Role::create([
+            "role_name" => $fields['role_name']
+        ]);
+
+        return response()->json([], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Role $role)
+    public function update(Request $request)
     {
-        //
+        $role = Role::find($request->role_id);
+
+        $input = $request->validate([
+            "role_id" => "required|integer",
+            "role_name" => "required|string",
+        ]);
+    
+        $role->role_id = $input['role_id'];
+        $role->role_name = $input['role_name'];
+        
+        $role->update();
+
+        return response()->json([], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Role $role)
+    public function delete(Request $request)
     {
-        //
+        $role = Role::find($request->role_id);
+
+        $role->delete();
+
+        return response()->json([], 200);
     }
 }

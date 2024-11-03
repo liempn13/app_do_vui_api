@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Options;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class OptionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        //
+        $options = Options::all();
+        return response()->json($options);
     }
 
     /**
@@ -22,64 +20,52 @@ class OptionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "option_content" => "requied|string",
+            "option_value" => "requied|boolean",
+            "question_id" => "requied|string",
+            "topic_id" => "requied|string"
+        ]);
+
+        $newOption = Options::create([
+            'option_content' => ($fields['option_content']),    
+            'option_value' => ($fields['option_value']),    
+            'question_id' => ($fields['question_id']),    
+            'topic_id' => ($fields['topic_id']),    
+        ]);
+        return response()->json([], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
+        $option = Options::find($request->options_id);
+
+        $input = $request->validate([
+            "options_id" => "required|string",
+            "option_content" => "required|string",
+            "option_value" => "required|string",
+            "question_id" => "required|string",
+            "topic_id" => "required|string"
+        ]);
+
+        $option->options_id = $input['options_id'];
+        $option->option_content = $input['option_content'];
+        $option->option_value = $input['option_value'];
+        $option->question_id = $input['question_id'];
+        $option->topic_id = $input['topic_id'];
+        $option->update();
+
+        return response()->json([], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Options  $options
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Options $options)
+    public function delete(Request $request)
     {
-        //
-    }
+        $option = Options::find($request->options_id);
+        
+        $option->delete();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Options  $options
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Options $options)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Options  $options
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Options $options)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Options  $options
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Options $options)
-    {
-        //
+        return response()->json([], 200);
     }
 }

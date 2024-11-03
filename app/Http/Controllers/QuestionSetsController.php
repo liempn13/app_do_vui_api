@@ -4,82 +4,61 @@ namespace App\Http\Controllers;
 
 use App\Models\QuestionSets;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class QuestionSetsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $questionSets = QuestionSets::all();
+        return response()->json($questionSets);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\QuestionSets  $questionSets
-     * @return \Illuminate\Http\Response
-     */
     public function show(QuestionSets $questionSets)
     {
-        //
+        return QuestionSets::findOrFail($questionSets['question_set_id']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\QuestionSets  $questionSets
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(QuestionSets $questionSets)
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "topic_id" => "required|string",
+            "question_quantity" => "required|integer"
+        ]);
+
+        $newQuestionSet = QuestionSets::create([
+            "topic_id" => $fields['topic_id'],
+            "question_quantity" => $fields['question_quantity']
+        ]);
+
+        return response()->json([], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\QuestionSets  $questionSets
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, QuestionSets $questionSets)
+    public function update(Request $request)
     {
-        //
+        $question_set = QuestionSets::find($request->question_set_id);
+
+        $input = $request->validate([
+            "question_set_id" => "required|string",
+            "topic_id" => "required|string",
+            "question_quantity" => "required|integer"
+        ]);
+ 
+        $question_set->question_set_id = $input['question_set_id'];
+        $question_set->topic_id = $input['topic_id'];
+        $question_set->question_quantity = $input['question_quantity'];
+
+        $question_set->update();
+
+        return response()->json([], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\QuestionSets  $questionSets
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(QuestionSets $questionSets)
+    public function delete(Request $request)
     {
-        //
+        $question_set = QuestionSets::find($request->question_set_id);
+        
+        $question_set->delete();
+
+        return response()->json([], 200);
     }
 }

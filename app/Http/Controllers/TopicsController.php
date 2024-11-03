@@ -4,82 +4,57 @@ namespace App\Http\Controllers;
 
 use App\Models\Topics;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class TopicsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $topics = Topics::all();
+        return response()->json($topics);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Topics  $topics
-     * @return \Illuminate\Http\Response
-     */
     public function show(Topics $topics)
     {
-        //
+        return Topics::findOrFail($topics['topic_id']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Topics  $topics
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Topics $topics)
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "topic_id" => "requied|string",
+            "topic_name" => "requied|string"
+        ]);
+
+        $newTopics = Topics::create([
+            'topic_id' => ($fields['topic_id']),    
+            'topic_name' => ($fields['topic_name']),    
+        ]);
+
+        return response()->json([], 201);
+    }
+    public function update(Request $request)
+    {
+        $topics = Topics::find($request->topic_id);
+        $input = $request->validate([
+           'topic_id' => 'required|string', 
+           'topic_name' => 'required|string' 
+        ]);
+        $topics->topic_id = $input['topic_id'];
+        $topics->topic_name = $input['topic_name'];
+        
+        $topics->update();
+
+        return response()->json([], 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Topics  $topics
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Topics $topics)
+    public function delete(Request $request)
     {
-        //
-    }
+        $topics = Topics::find($request->topic_id);
+        
+        $topics->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Topics  $topics
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Topics $topics)
-    {
-        //
+        return response()->json([], 200);
     }
+    
 }

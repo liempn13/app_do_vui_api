@@ -3,83 +3,66 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomDetails;
+use GuzzleHttp\RetryMiddleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class RoomDetailsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $roomDetail = RoomDetails::all();
+
+        return response()->json($roomDetail);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RoomDetails  $roomDetails
-     * @return \Illuminate\Http\Response
-     */
     public function show(RoomDetails $roomDetails)
     {
-        //
+        return RoomDetails::findOrFail($roomDetails->room_id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RoomDetails  $roomDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RoomDetails $roomDetails)
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "room_id" => "requied|string",
+            "topic_id" => "requied|string",
+            "opponent_id" => "requied|string"
+        ]);
+
+        $newFriend = RoomDetails::create([
+            "room_id" => $fields['room_id'],
+            "topic_id" => $fields['topic_id'],
+            "opponent_id" => $fields['opponent_id'],
+        ]);
+
+        return response()->json([], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RoomDetails  $roomDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, RoomDetails $roomDetails)
+    public function update(Request $request)
     {
-        //
+        $roomDetail = RoomDetails::find($request->room_id);
+
+        $input = $request->validate([
+            "room_id" => "requied|string",
+            "topic_id" => "requied|string",
+            "opponent_id" => "requied|string"
+        ]);
+
+        $roomDetail->room_id = $input['room_id'];
+        $roomDetail->topic_id = $input['topic_id'];
+        $roomDetail->opponent_id = $input['opponent_id'];
+
+        $roomDetail->update();
+        
+        return response()->json([], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RoomDetails  $roomDetails
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RoomDetails $roomDetails)
+    public function delete(Request $request)
     {
-        //
+        $roomDetail = RoomDetails::find($request->room_id);
+        
+        $roomDetail->delete();
+
+        return response()->json([], 200);
     }
 }

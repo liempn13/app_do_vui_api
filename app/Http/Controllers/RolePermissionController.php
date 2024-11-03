@@ -4,82 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\RolePermission;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class RolePermissionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $rolePermission = RolePermission::all();
+        return response()->json($rolePermission);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $field = $request->validate([
+            "role_id" => "required|string",
+            "permission_id" => "required|string"
+        ]);
+
+        $newRole_Permission = RolePermission::create([
+            "role_id" => $field['role_id'],
+            "permission_id" => $field['permission_id'],
+        ]);
+
+        return response()->json([], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-        //
+        //TO DO - UPDATE SOMTHING 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function show(RolePermission $rolePermission)
+    public function delete(Request $request)
     {
-        //
-    }
+        $role_permission = RolePermission::find($request->role_id && $request->permission_id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(RolePermission $rolePermission)
-    {
-        //
-    }
+        $role_permission->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, RolePermission $rolePermission)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RolePermission  $rolePermission
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(RolePermission $rolePermission)
-    {
-        //
+        return response()->json([], 200);
     }
 }

@@ -4,82 +4,60 @@ namespace App\Http\Controllers;
 
 use App\Models\Questions;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class QuestionsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $question =  Questions::all();
+        return response()->json($question);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Questions  $questions
-     * @return \Illuminate\Http\Response
-     */
     public function show(Questions $questions)
     {
-        //
+        return Questions::findOrFail($questions['question_id']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Questions  $questions
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Questions $questions)
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "question_content" => "required|string",
+            "topic_id" => "required|string"
+        ]);
+
+        $newQuestions = Questions::create([
+            "question_content" => $fields['question_content'],
+            "topic_id" => $fields['topic_id']
+        ]);
+
+        return response()->json([], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Questions  $questions
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Questions $questions)
+    public function update(Request $request)
     {
-        //
+        $question = Questions::find($request->question_id);
+
+        $input = $request->validate([
+            "question_id" => "required|string",
+            "question_content" => "required|string",
+            "topic_id" => "required|string"
+        ]);
+
+        $question->question_id = $input['question_id'];
+        $question->question_content = $input['question_content'];
+        $question->topic_id = $input['topic_id'];
+
+        return response()->json([], 200);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Questions  $questions
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Questions $questions)
+    public function delete(Request $request)
     {
-        //
+        $question = Questions::find($request->question_id);
+
+        $question->delete();
+
+        return response()->json([], 200);
     }
 }

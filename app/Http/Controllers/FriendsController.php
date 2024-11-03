@@ -4,82 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Models\Friends;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class FriendsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $friends = Friends::all();
+        return response()->json($friends);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Friends  $friends
-     * @return \Illuminate\Http\Response
-     */
     public function show(Friends $friends)
     {
-        //
+        // What is param ? and method used to ? 
+        return Friends::findOrFail($friends['user_id']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Friends  $friends
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Friends $friends)
+
+    public function create(Request $request)
     {
-        //
+        $fields = $request->validate([
+            "user_id" => "requied|string",
+            "friends_id" => "requied|string"
+        ]);
+
+        $newFriend = Friends::create([
+            'user_id' => ($fields['user_id']),    
+            'friends_id' => ($fields['friends_id']),    
+        ]);
+        return response()->json([], 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Friends  $friends
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Friends $friends)
+    public function update(Request $request)
     {
-        //
+        $friends = Friends::find($request->friends_id);
+        $input = $request->validate([
+           'user_id' => 'required|string', 
+           'friends_id' => 'required|string' 
+        ]);
+        $friends->user_id = $input['user_id'];
+        $friends->friends_id = $input['friends_id'];
+        
+        $friends->update();
+
+        return response()->json([], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Friends  $friends
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Friends $friends)
+    public function delete(Request $request)
     {
-        //
+        $friends = Friends::find($request->friends_id);
+        
+        $friends->delete();
+
+        return response()->json([], 200);
     }
 }
