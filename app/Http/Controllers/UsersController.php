@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -17,14 +18,56 @@ class UsersController extends Controller
 
     public function show(Users $users)
     {
-        return Users::findOrFail($users['user_id']); 
+        return Users::findOrFail($users['user_id']);
     }
+    public function emailLogin(Request $request)
+    {
+        $fields = $request->validate([
+            "email" => "required|string",
+            "password" => "required|string",
+        ]);
 
+        //Check email
+        $user = Users::where(["email" => $fields['email'], "status" > -1])->first();
+
+        //Check password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => 'Bad creds'
+            ], 401);
+        }
+
+        return response()->json(
+            $user,
+            200
+        );
+    }
+    public function phoneNumberLogin(Request $request)
+    {
+        $fields = $request->validate([
+            "phone" => "required|string",
+            "password" => "required|string",
+        ]);
+
+        //Check phone
+        $user = Users::where(["phone" => $fields['phone'], "status" > -1])->first();
+        //Check password
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
+            return response([
+                'message' => 'Bad creds'
+            ], 401);
+        }
+
+        return response()->json(
+            $user,
+            200
+        );
+    }
     public function create(Request $request)
     {
         $fields = $request->validate([
             "user_game_name" => "required|string|unique:users,phone",
-            "email" => "required|string|unique:users,email",
+            "email" => "nullable|string|unique:users,email",
             "phone" => "required|string|unique:users,phone",
             "password" => "required|string",
             "level" => "integer",
@@ -43,6 +86,13 @@ class UsersController extends Controller
         ]);
 
         return response()->json([], 201);
+    }
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return response()->json([
+            "message" => "Logged out"
+        ]);
     }
     public function update(Request $request)
     {
@@ -67,18 +117,18 @@ class UsersController extends Controller
         $user->level = $input['level'];
         $user->exp = $input['exp'];
         $user->status = $input['status'];
-
         $user->update();
 
-        return response()->json([], 200);
+        return response()->json(
+            $user,
+            200
+        );
     }
 
     public function delete(Request $request)
     {
         $user = Users::find($request->user_id);
-        
         $user->delete();
-
         return response()->json([], 200);
     }
 }
