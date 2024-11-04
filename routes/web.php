@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TopicsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,9 @@ Route::get('/', function () {
 });
 
 Route::get('/getTopics', [TopicsController::class, 'index']);
+Route::get('/getFriends/{idUser}', [UsersController::class, 'getFriends']);
+Route::get('/getPlayedHistory/{idUser}', [UsersController::class, 'getPlayedHistory']);
+
 Route::post('/createTopics', [TopicsController::class, 'create']);
 Route::post('/deleteTopics', [TopicsController::class, 'delete']);
 Route::post('/updateTopics', [TopicsController::class, 'update']);

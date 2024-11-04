@@ -33,7 +33,7 @@ class Users extends Authenticatable
     public $timestamps = false;
 
     protected $casts = [
-        "user_id" => "string",
+        "user_id" => "integer",
         "user_game_name" => "string",
         "email" => "string",
         "phone" => "string",

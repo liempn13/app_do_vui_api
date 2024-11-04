@@ -23,8 +23,8 @@ class FriendsController extends Controller
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "user_id" => "requied|string",
-            "friends_id" => "requied|string"
+            "user_id" => "required|integer",
+            "friends_id" => "required|integer"
         ]);
 
         $newFriend = Friends::create([
@@ -38,8 +38,8 @@ class FriendsController extends Controller
     {
         $friends = Friends::find($request->friends_id);
         $input = $request->validate([
-           'user_id' => 'required|string', 
-           'friends_id' => 'required|string' 
+           'user_id' => 'required|integer', 
+           'friends_id' => 'required|integer' 
         ]);
         $friends->user_id = $input['user_id'];
         $friends->friends_id = $input['friends_id'];

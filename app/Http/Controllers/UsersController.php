@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Type\Integer;
 
 class UsersController extends Controller
 {
@@ -22,12 +23,13 @@ class UsersController extends Controller
         return Users::findOrFail($users['user_id']);
     }
 
-    public function getFriends(string $idUser)
+    public function getFriends(int $idUser)
     {
         $listFriends = DB::table('users')
-            ->join('friends', 'user_id', '=', 'friends.user_id')
+            ->join('friends', 'users.user_id', '=', 'friends.user_id')
             ->select(
-                "users.user_id",
+                "friends.user_id",
+                "friends.friends_id",
                 "users.user_game_name",
                 "users.level",
                 "users.exp",
@@ -41,15 +43,16 @@ class UsersController extends Controller
     public function getPlayedHistory(string $idUser)
     {
         $played_historys = DB::table('users')
-            ->join('played_historys', 'user_id', '=', 'played_historys.user_id')
-            //->join('rooms', 'room_id', '=', 'rooms.room_id')
+            ->join('played_historys', 'users.user_id', '=', 'played_historys.user_id')
+            ->join('rooms', 'played_historys.room_id', '=', 'rooms.room_id')
             ->select(
                 "users.user_id",
                 "users.user_game_name",
+                "rooms.room_name",
                 "users.level",
                 "users.exp",
                 "users.status",
-                "played_history.*",
+                "played_historys.*",
             )
             ->where("users.user_id", $idUser)
             ->get();
