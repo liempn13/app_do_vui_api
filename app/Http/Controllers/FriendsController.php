@@ -20,7 +20,6 @@ class FriendsController extends Controller
         return Friends::findOrFail($friends['user_id']);
     }
 
-
     public function create(Request $request)
     {
         $fields = $request->validate([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -19,6 +20,41 @@ class UsersController extends Controller
     public function show(Users $users)
     {
         return Users::findOrFail($users['user_id']);
+    }
+
+    public function getFriends(string $idUser)
+    {
+        $listFriends = DB::table('users')
+            ->join('friends', 'user_id', '=', 'friends.user_id')
+            ->select(
+                "users.user_id",
+                "users.user_game_name",
+                "users.level",
+                "users.exp",
+                "users.status",
+            )->where('users.user_id', $idUser)
+            ->get();
+
+        return response()->json($listFriends, 200);
+    }
+
+    public function getPlayedHistory(string $idUser)
+    {
+        $played_historys = DB::table('users')
+            ->join('played_historys', 'user_id', '=', 'played_historys.user_id')
+            //->join('rooms', 'room_id', '=', 'rooms.room_id')
+            ->select(
+                "users.user_id",
+                "users.user_game_name",
+                "users.level",
+                "users.exp",
+                "users.status",
+                "played_history.*",
+            )
+            ->where("users.user_id", $idUser)
+            ->get();
+
+        return response()->json($played_historys, 200);
     }
     public function emailLogin(Request $request)
     {
@@ -70,6 +106,7 @@ class UsersController extends Controller
             "email" => "nullable|string|unique:users,email",
             "phone" => "required|string|unique:users,phone",
             "password" => "required|string",
+            "isAdmin" => "boolean",
             "level" => "integer",
             "exp" => "integer",
             "status" => "required|boolean"
@@ -80,6 +117,7 @@ class UsersController extends Controller
             "email" => $fields['email'],
             "phone" => $fields['phone'],
             "password" => $fields['password'],
+            "isAdmin" => $fields['isAdmin'],
             "level" => $fields['level'],
             "exp" => $fields['exp'],
             "status" => $fields['status'],
@@ -104,6 +142,7 @@ class UsersController extends Controller
             "email" => "required|string|unique:users,email",
             "phone" => "required|string|unique:users,phone",
             "password" => "required|string",
+            "isAdmin" => "boolean",
             "level" => "integer",
             "exp" => "integer",
             "status" => "required|boolean"
@@ -114,6 +153,7 @@ class UsersController extends Controller
         $user->email = $input['email'];
         $user->phone = $input['phone'];
         $user->password = $input['password'];
+        $user->isAdmin = $input['isAdmin'];
         $user->level = $input['level'];
         $user->exp = $input['exp'];
         $user->status = $input['status'];

@@ -22,21 +22,21 @@ class PlayedHistorysController extends Controller
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "room_id" => "requied|string",
+            "room_id" => "string",
             "user_id" => "requied|string",
             "topic_id" => "requied|string",
-            "question_id" => "requied|string",
             "score" => "requied|integer",
             "player_quantity" => "requied|integer",
+            "time" => "requied|time",
         ]);
 
         $newPlayedHistory = PlayedHistorys::create([
             "room_id" => $fields['room_id'],
             "user_id" => $fields['user_id'],
             "topic_id" => $fields['topic_id'],
-            "question_id" => $fields['question_id'],
             "score" => $fields['score'],
             "player_quantity" => $fields['player_quantity'],
+            "time" => "requied|time",
         ]);
 
         return response()->json([], 201);
@@ -47,21 +47,23 @@ class PlayedHistorysController extends Controller
         $playedHistorys = PlayedHistorys::find($request->ID);
 
         $input = $request->validate([
-            "room_id" => "requied|string",
+            "ID" => "string",
+            "room_id" => "string",
             "user_id" => "requied|string",
             "topic_id" => "requied|string",
-            "question_id" => "requied|string",
             "score" => "requied|integer",
-            "player_quantity" => "requied|integer"
+            "player_quantity" => "requied|integer",
+            "time" => "requied|time",
+
         ]);
 
         $playedHistorys->ID = $input['ID'];
         $playedHistorys->room_id = $input['room_id'];
         $playedHistorys->user_id = $input['user_id'];
         $playedHistorys->topic_id = $input['topic_id'];
-        $playedHistorys->question_id = $input['question_id'];
         $playedHistorys->score = $input['score'];
         $playedHistorys->player_quantity = $input['player_quantity'];
+        $playedHistorys->time = $input['time'];
 
         $playedHistorys->update();
         

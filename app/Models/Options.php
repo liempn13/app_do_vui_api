@@ -15,15 +15,13 @@ class Options extends Model
         "options_id",
         "option_content",
         "option_value",
-        "question_id",
-        "topic_id"
+        "question_id"
     ]; 
     protected $casts = [
         "options_id" => "integer",
         "option_content" => "string",
         "option_value" => "boolean",
-        "question_id" => "integer",
-        "topic_id" => "integer"
+        "question_id" => "integer"
     ]; 
     public $timestamps = false;
 }

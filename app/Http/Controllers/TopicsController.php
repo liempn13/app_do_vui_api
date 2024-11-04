@@ -47,7 +47,7 @@ class TopicsController extends Controller
 
         return response()->json([], 200);
     }
-
+    
     public function delete(Request $request)
     {
         $topics = Topics::find($request->topic_id);

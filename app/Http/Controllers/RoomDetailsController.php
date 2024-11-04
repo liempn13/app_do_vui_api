@@ -25,13 +25,11 @@ class RoomDetailsController extends Controller
     {
         $fields = $request->validate([
             "room_id" => "requied|string",
-            "topic_id" => "requied|string",
             "opponent_id" => "requied|string"
         ]);
 
         $newFriend = RoomDetails::create([
             "room_id" => $fields['room_id'],
-            "topic_id" => $fields['topic_id'],
             "opponent_id" => $fields['opponent_id'],
         ]);
 
@@ -43,13 +41,13 @@ class RoomDetailsController extends Controller
         $roomDetail = RoomDetails::find($request->room_id);
 
         $input = $request->validate([
+            "id" => "requied|string",
             "room_id" => "requied|string",
-            "topic_id" => "requied|string",
             "opponent_id" => "requied|string"
         ]);
 
+        $roomDetail->id = $input['id'];
         $roomDetail->room_id = $input['room_id'];
-        $roomDetail->topic_id = $input['topic_id'];
         $roomDetail->opponent_id = $input['opponent_id'];
 
         $roomDetail->update();
