@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 
 class OptionsController extends Controller
 {
-    
+
     public function index()
     {
         $options = Options::all();
@@ -29,9 +29,9 @@ class OptionsController extends Controller
         ]);
 
         $newOption = Options::create([
-            'option_content' => ($fields['option_content']),    
-            'option_value' => ($fields['option_value']),    
-            'question_id' => ($fields['question_id']),   
+            'option_content' => ($fields['option_content']),
+            'option_value' => ($fields['option_value']),
+            'question_id' => ($fields['question_id']),
         ]);
         return response()->json([], 201);
     }
@@ -41,13 +41,13 @@ class OptionsController extends Controller
         $option = Options::find($request->options_id);
 
         $input = $request->validate([
-            "options_id" => "required|string",
+            "option_id" => "required|integer",
             "option_content" => "required|string",
             "option_value" => "required|string",
             "question_id" => "required|string",
         ]);
 
-        $option->options_id = $input['options_id'];
+        $option->option_id = $input['option_id'];
         $option->option_content = $input['option_content'];
         $option->option_value = $input['option_value'];
         $option->question_id = $input['question_id'];
@@ -59,7 +59,7 @@ class OptionsController extends Controller
     public function delete(Request $request)
     {
         $option = Options::find($request->options_id);
-        
+
         $option->delete();
 
         return response()->json([], 200);

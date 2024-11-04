@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\QuestionSetsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +21,17 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::controller(
-    //controller::class
+    UsersController::class
 )->group(function () {
     Route::get('', '');
+    Route::put('', '');
+    Route::post('',);
+    Route::delete('', '');
+});
+Route::controller(
+    QuestionSetsController::class
+)->group(function () {
+    Route::get('/v1/set/{id}', 'getQuestionSet');
     Route::put('', '');
     Route::post('',);
     Route::delete('', '');
