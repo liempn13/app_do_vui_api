@@ -24,6 +24,8 @@ class RoomsController extends Controller
     {
         $fields = $request->validate([
             "topic_id" => "required|integer",
+            "room_code" => "required|string",
+            "room_name" => "required|string",
             "creator_id" => "required|integer",
             "password" => "required|string",
             "room_status" => "required|integer"
@@ -31,6 +33,8 @@ class RoomsController extends Controller
 
         $newFriend = Rooms::create([
             'topic_id' => ($fields['topic_id']),    
+            'room_code' => ($fields['room_code']),    
+            'room_name' => ($fields['room_name']),    
             'creator_id' => ($fields['creator_id']),    
             'password' => ($fields['password']),    
             'room_status' => ($fields['room_status'])
@@ -45,6 +49,8 @@ class RoomsController extends Controller
 
         $input = $request->validate([
             "room_id" => "required|integer",
+            "room_code" => "required|string",
+            "room_name" => "required|string",
             "topic_id" => "required|integer",
             "creator_id" => "required|integer",
             "password" => "required|string",
@@ -52,6 +58,8 @@ class RoomsController extends Controller
         ]);
 
         $room->room_id = $input['room_id'];
+        $room->room_id = $input['room_code'];
+        $room->room_name = $input['room_name'];
         $room->topic_id = $input['topic_id'];
         $room->creator_id = $input['creator_id'];
         $room->password = $input['password'];

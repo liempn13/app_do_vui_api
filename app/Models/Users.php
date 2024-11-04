@@ -18,6 +18,7 @@ class Users extends Authenticatable
         "email",
         "phone",
         "password",
+        "isAdmin",
         "level",
         "exp",
         "status"
@@ -37,6 +38,7 @@ class Users extends Authenticatable
         "email" => "string",
         "phone" => "string",
         "password" => "string",
+        "isAdmin" => "boolean",
         "level" => "integer",
         "exp" => "integer",
         "status" => "boolean"

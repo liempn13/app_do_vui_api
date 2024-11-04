@@ -9,16 +9,16 @@ class RoomDetails extends Model
 {
     use HasFactory;
     protected $table = "room_details";
-    protected $primaryKey = "";
-    protected $keyType = "";
+    protected $primaryKey = "id";
+    protected $keyType = "integer";
     protected $fillable = [
+        "id",
         "room_id",
-        "topic_id",
         "opponent_id"
     ]; 
     protected $casts = [
+        "id" => "integer",
         "room_id" => "integer",
-        "topic_id" => "integer",
         "opponent_id" => "integer",
     ]; 
     public $timestamps = false;

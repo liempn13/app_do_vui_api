@@ -13,6 +13,8 @@ class Rooms extends Model
     protected $keyType = "integer";
     protected $fillable = [
         "room_id",
+        "room_code",
+        "room_name",
         "topic_id",
         "creator_id",
         "password",
@@ -20,6 +22,8 @@ class Rooms extends Model
     ]; 
     protected $casts = [
         "room_id" => "integer",
+        "room_code" => "string",
+        "room_name" => "string",
         "topic_id" => "integer",
         "creator_id" => "integer",
         "password" => "string",

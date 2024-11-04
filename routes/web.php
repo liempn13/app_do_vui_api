@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TopicsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/getTopics', [TopicsController::class, 'index']);
+Route::post('/createTopics', [TopicsController::class, 'create']);
+Route::post('/deleteTopics', [TopicsController::class, 'delete']);
+Route::post('/updateTopics', [TopicsController::class, 'update']);
