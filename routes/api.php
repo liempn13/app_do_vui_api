@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::controller(
     UsersController::class
 )->group(function () {
-    Route::get('/v1/users', 'index');
-    Route::get('/v1/user/info/{id}', 'getUserInfo');
-    Route::post('/v1/user/auth/register', 'create');
+    Route::get('/v1/users', 'index'); // Lấy ra toàn bộ danh sách user
+    Route::get('/v1/user/info/{id}', 'getUserInfo'); // lấy ra 1 user
+    Route::post('/v1/user/auth/register', 'create'); // tạo mới
     Route::post('/v1/auth/login/email', 'emailLogin');
     Route::post('/v1/auth/login/phone', 'phoneNumberLogin');
     Route::post('/v1/logout', 'logout');
@@ -42,21 +42,21 @@ Route::controller(
     Route::delete('', '');
 });
 Route::controller(TopicsController::class)->group(function () {
-    Route::get('/v1/topics', '');
+    Route::get('/v1/topics', 'index');
     Route::get('/v1/topic/{id}', '');
     Route::put('/v1/topic/update', 'update');
     Route::post('/v1/topic/create', 'create');
-    Route::delete('/v1/topic/delete', '');
+    Route::delete('/v1/topic/delete', 'delete');
 });
 Route::controller(QuestionsController::class)->group(function () {
     Route::get('/v1', '');
     Route::get('/v1/question', '');
     Route::put('/v1/question/update', 'update');
     Route::post('/v1/question/create', 'create');
-    Route::delete('/v1', '');
+    Route::delete('/v1/question/delete', 'delete');
 });
 Route::controller(RoomsController::class)->group(function () {
-    Route::get('/v1/rooms', '');
+    Route::get('/v1/rooms', 'index');
     Route::get('/v1/room/{id}', '');
     Route::put('/v1/room/update', 'update');
     Route::post('/v1/room/create', 'create');
