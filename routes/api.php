@@ -1,20 +1,15 @@
 <?php
 
+use App\Http\Controllers\FriendsController;
+use App\Http\Controllers\OptionsController;
+use App\Http\Controllers\PlayedHistorysController;
+use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\QuestionSetsController;
+use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\TopicsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -23,16 +18,57 @@ use Illuminate\Support\Facades\Route;
 Route::controller(
     UsersController::class
 )->group(function () {
-    Route::get('', '');
-    Route::put('', '');
-    Route::post('',);
-    Route::delete('', '');
+    Route::get('/v1/users', 'index');
+    Route::get('/v1/user/info/{id}', 'getUserInfo');
+    Route::post('/v1/user/auth/register', 'create');
+    Route::post('/v1/auth/login/email', 'emailLogin');
+    Route::post('/v1/auth/login/phone', 'phoneNumberLogin');
+    Route::post('/v1/logout', 'logout');
+    Route::put('/v1/user/info/update', 'update');
+});
+Route::controller(
+    FriendsController::class
+)->group(function () {
+    Route::get('/v1/set/{id}', 'getQuestionSet');
+    Route::post('/v1/friend/create', 'create');
+    Route::delete('/v1/friend/delete', 'delete');
 });
 Route::controller(
     QuestionSetsController::class
 )->group(function () {
     Route::get('/v1/set/{id}', 'getQuestionSet');
-    Route::put('', '');
-    Route::post('',);
+    Route::put('/v1/set/update', 'update');
+    Route::post('/v1/set/create', 'create');
     Route::delete('', '');
+});
+Route::controller(TopicsController::class)->group(function () {
+    Route::get('/v1/topics', '');
+    Route::get('/v1/topic/{id}', '');
+    Route::put('/v1/topic/update', 'update');
+    Route::post('/v1/topic/create', 'create');
+    Route::delete('/v1/topic/delete', '');
+});
+Route::controller(QuestionsController::class)->group(function () {
+    Route::get('/v1', '');
+    Route::get('/v1/question', '');
+    Route::put('/v1/question/update', 'update');
+    Route::post('/v1/question/create', 'create');
+    Route::delete('/v1', '');
+});
+Route::controller(RoomsController::class)->group(function () {
+    Route::get('/v1/rooms', '');
+    Route::get('/v1/room/{id}', '');
+    Route::put('/v1/room/update', 'update');
+    Route::post('/v1/room/create', 'create');
+});
+Route::controller(PlayedHistorysController::class)->group(function () {
+    Route::get('/v1', 'index');
+    Route::put('/v1', 'update');
+    Route::post('/v1', 'create');
+});
+Route::controller(OptionsController::class)->group(function () {
+    Route::get('/v1/options/question/{id}', 'show');
+    Route::put('/v1/option/update', 'update');
+    Route::post('/v1/option/create', 'create');
+    Route::delete('/v1/option/delete', 'delete');
 });

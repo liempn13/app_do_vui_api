@@ -31,7 +31,7 @@ class TopicsController extends Controller
             'topic_name' => ($fields['topic_name']),
         ]);
 
-        return response()->json([], 201);
+        return response()->json($newTopics, 201);
     }
     public function update(Request $request)
     {
@@ -51,10 +51,8 @@ class TopicsController extends Controller
     public function delete(Request $request)
     {
         $topics = Topics::find($request->topic_id);
-
         $topics->delete();
-
-        return response()->json([], 200);
+        return response()->json([], status: 200);
     }
 
 }

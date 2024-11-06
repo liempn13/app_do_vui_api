@@ -23,11 +23,11 @@ class PlayedHistorysController extends Controller
     {
         $fields = $request->validate([
             "room_id" => "string",
-            "user_id" => "requied|string",
-            "topic_id" => "requied|string",
-            "score" => "requied|integer",
-            "player_quantity" => "requied|integer",
-            "time" => "requied|time",
+            "user_id" => "required|string",
+            "topic_id" => "required|string",
+            "score" => "required|integer",
+            "player_quantity" => "required|integer",
+            "time" => "required|time",
         ]);
 
         $newPlayedHistory = PlayedHistorys::create([
@@ -36,7 +36,7 @@ class PlayedHistorysController extends Controller
             "topic_id" => $fields['topic_id'],
             "score" => $fields['score'],
             "player_quantity" => $fields['player_quantity'],
-            "time" => "requied|time",
+            "time" => "required|time",
         ]);
 
         return response()->json([], 201);
@@ -49,11 +49,11 @@ class PlayedHistorysController extends Controller
         $input = $request->validate([
             "ID" => "string",
             "room_id" => "string",
-            "user_id" => "requied|string",
-            "topic_id" => "requied|string",
-            "score" => "requied|integer",
-            "player_quantity" => "requied|integer",
-            "time" => "requied|time",
+            "user_id" => "required|string",
+            "topic_id" => "required|string",
+            "score" => "required|integer",
+            "player_quantity" => "required|integer",
+            "time" => "required|time",
 
         ]);
 
@@ -66,14 +66,14 @@ class PlayedHistorysController extends Controller
         $playedHistorys->time = $input['time'];
 
         $playedHistorys->update();
-        
+
         return response()->json([], 200);
     }
 
     public function delete(Request $request)
     {
         $playedHistorys = PlayedHistorys::find($request->ID);
-        
+
         $playedHistorys->delete();
 
         return response()->json([], 200);

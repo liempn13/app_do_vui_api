@@ -9,18 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionSetsController extends Controller
 {
-    public function index()
+    public function getQuestionSet(int $topicID)
     {
-        $questionSets = QuestionSets::all();
-        return response()->json($questionSets);
+        return
+            QuestionSets::where('topic_id', $topicID);
     }
 
-    public function show(QuestionSets $questionSets)
-    {
-        return QuestionSets::findOrFail($questionSets['question_set_id']);
-    }
-
-    public function getQuestionSet(string $id_questionSet)
+    public function getQuestionSetDetails(string $id_questionSet)
     {
         $question_set = DB::table('question_set_details')
 

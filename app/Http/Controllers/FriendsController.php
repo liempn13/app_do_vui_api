@@ -8,16 +8,9 @@ use Illuminate\Routing\Controller;
 
 class FriendsController extends Controller
 {
-    public function index()
+    public function friendsList(int $user)
     {
-        $friends = Friends::all();
-        return response()->json($friends);
-    }
-
-    public function show(Friends $friends)
-    {
-        // What is param ? and method used to ?
-        return Friends::findOrFail($friends['user_id']);
+        return Friends::where('user_id', $user);
     }
 
     public function create(Request $request)
@@ -32,21 +25,6 @@ class FriendsController extends Controller
             'friends_id' => ($fields['friends_id']),
         ]);
         return response()->json([], 201);
-    }
-
-    public function update(Request $request)
-    {
-        $friends = Friends::find($request->friends_id);
-        $input = $request->validate([
-            'user_id' => 'required|integer',
-            'friends_id' => 'required|integer'
-        ]);
-        $friends->user_id = $input['user_id'];
-        $friends->friends_id = $input['friends_id'];
-
-        $friends->update();
-
-        return response()->json([], 200);
     }
 
     public function delete(Request $request)

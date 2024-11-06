@@ -24,8 +24,8 @@ class RoomDetailsController extends Controller
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "room_id" => "requied|string",
-            "opponent_id" => "requied|string"
+            "room_id" => "required|string",
+            "opponent_id" => "required|string"
         ]);
 
         $newFriend = RoomDetails::create([
@@ -41,9 +41,9 @@ class RoomDetailsController extends Controller
         $roomDetail = RoomDetails::find($request->room_id);
 
         $input = $request->validate([
-            "id" => "requied|string",
-            "room_id" => "requied|string",
-            "opponent_id" => "requied|string"
+            "id" => "required|string",
+            "room_id" => "required|string",
+            "opponent_id" => "required|string"
         ]);
 
         $roomDetail->id = $input['id'];
@@ -51,14 +51,14 @@ class RoomDetailsController extends Controller
         $roomDetail->opponent_id = $input['opponent_id'];
 
         $roomDetail->update();
-        
+
         return response()->json([], 200);
     }
 
     public function delete(Request $request)
     {
         $roomDetail = RoomDetails::find($request->room_id);
-        
+
         $roomDetail->delete();
 
         return response()->json([], 200);

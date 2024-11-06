@@ -8,24 +8,16 @@ use Illuminate\Routing\Controller;
 
 class OptionsController extends Controller
 {
-
-    public function index()
+    public function show(int $questionID)
     {
-        $options = Options::all();
-        return response()->json($options);
+        return Options::where('question_id', $questionID);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "option_content" => "requied|string",
-            "option_value" => "requied|boolean",
-            "question_id" => "requied|string"
+            "option_content" => "required|string",
+            "option_value" => "required|boolean",
+            "question_id" => "required|string"
         ]);
 
         $newOption = Options::create([
