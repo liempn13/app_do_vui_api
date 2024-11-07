@@ -26,17 +26,16 @@ Route::controller(
     Route::post('/v1/logout', 'logout');
     Route::put('/v1/user/info/update', 'update');
 });
+//
 Route::controller(
     FriendsController::class
-)->group(function () {
-    Route::get('/v1/set/{id}', 'getQuestionSet');
-    Route::post('/v1/friend/create', 'create');
-    Route::delete('/v1/friend/delete', 'delete');
-});
+)->group(function () {});
+//
 Route::controller(
     QuestionSetsController::class
 )->group(function () {
     Route::get('/v1/set/{id}', 'getQuestionSet');
+    Route::get('/v1/set/details/{id}', 'getQuestionSetDetails');
     Route::put('/v1/set/update', 'update');
     Route::post('/v1/set/create', 'create');
     Route::delete('', '');

@@ -11,15 +11,14 @@ class QuestionSetsController extends Controller
 {
     public function getQuestionSet(int $topicID)
     {
-        return
-            QuestionSets::where('topic_id', $topicID)->get();
+        return QuestionSets::where('topic_id', $topicID)->get();
     }
 
     public function getQuestionSetDetails(string $id_questionSet)
     {
         $question_set = DB::table('question_set_details')
 
-            ->join('question_sets', 'question_set_details.question_set_id', '=', 'question_set_details.question_set_id')
+            ->join('question_sets', 'question_set_details.question_set_id', '=', 'question_sets.question_set_id')
 
             ->join('questions', 'question_set_details.question_id', '=', 'questions.question_id')
 
@@ -29,13 +28,14 @@ class QuestionSetsController extends Controller
             ->select(
                 'topics.topic_name',
                 'question_sets.question_set_name',
-                'question_sets.question_quantity',
                 'questions.question_content',
                 'options.option_content',
                 'options.option_value',
-            )->where([
-                'question_set_details.question_set_id' => $id_questionSet
-            ])
+            )->where(
+                [
+                    'question_set_details.question_set_id' => $id_questionSet
+                ],
+            )
             ->get();
         return response()->json($question_set, 200);
     }
