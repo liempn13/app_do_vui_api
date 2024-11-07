@@ -37,8 +37,8 @@ class TopicsController extends Controller
     {
         $topics = Topics::find($request->topic_id);
         $input = $request->validate([
-           'topic_id' => 'required|integer',
-           'topic_name' => 'required|string'
+            'topic_id' => 'required|integer',
+            'topic_name' => 'required|string'
         ]);
         $topics->topic_id = $input['topic_id'];
         $topics->topic_name = $input['topic_name'];
@@ -54,5 +54,4 @@ class TopicsController extends Controller
         $topics->delete();
         return response()->json([], status: 200);
     }
-
 }

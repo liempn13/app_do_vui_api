@@ -12,7 +12,7 @@ class QuestionSetsController extends Controller
     public function getQuestionSet(int $topicID)
     {
         return
-            QuestionSets::where('topic_id', $topicID);
+            QuestionSets::where('topic_id', $topicID)->get();
     }
 
     public function getQuestionSetDetails(string $id_questionSet)
