@@ -24,18 +24,15 @@ class QuestionSetsController extends Controller
 
             ->join('topics', 'question_sets.topic_id', '=', 'topics.topic_id')
 
-            ->join('options', 'options.question_id', '=', 'questions.question_id')
             ->select(
-                'topics.topic_name',
-                'question_sets.question_set_name',
-                'questions.question_content',
-                'options.option_content',
-                'options.option_value',
+                // 'topics.topic_name',
+                // 'question_sets.question_set_name',
+                'questions.*',
             )->where(
                 [
                     'question_set_details.question_set_id' => $id_questionSet
                 ],
-            )
+            )->inRandomOrder()
             ->get();
         return response()->json($question_set, 200);
     }
@@ -44,7 +41,7 @@ class QuestionSetsController extends Controller
     {
         $fields = $request->validate([
             "topic_id" => "required|integer",
-            "question_set_name" => "required|string",
+            "question_set_name" => "required|string|unique:question_sets,question_set_name",
             "question_quantity" => "required|integer"
         ]);
 

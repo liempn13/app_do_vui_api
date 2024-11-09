@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rooms;
-use App\Models\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -17,7 +16,7 @@ class RoomsController extends Controller
 
     public function show(Rooms $rooms)
     {
-        return Rooms::findOrFail($rooms['room_id']); 
+        return Rooms::findOrFail($rooms['room_id']);
     }
 
     public function create(Request $request)
@@ -32,11 +31,11 @@ class RoomsController extends Controller
         ]);
 
         $newFriend = Rooms::create([
-            'topic_id' => ($fields['topic_id']),    
-            'room_code' => ($fields['room_code']),    
-            'room_name' => ($fields['room_name']),    
-            'creator_id' => ($fields['creator_id']),    
-            'password' => ($fields['password']),    
+            'topic_id' => ($fields['topic_id']),
+            'room_code' => ($fields['room_code']),
+            'room_name' => ($fields['room_name']),
+            'creator_id' => ($fields['creator_id']),
+            'password' => ($fields['password']),
             'room_status' => ($fields['room_status'])
         ]);
 
@@ -73,7 +72,7 @@ class RoomsController extends Controller
     public function delete(Request $request)
     {
         $room = Rooms::find($request->room_id);
-        
+
         $room->delete();
 
         return response()->json([], 200);

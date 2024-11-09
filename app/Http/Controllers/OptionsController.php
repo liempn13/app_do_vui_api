@@ -8,16 +8,16 @@ use Illuminate\Routing\Controller;
 
 class OptionsController extends Controller
 {
-    public function show(int $questionID)
+    public function getOptionsOfQuestion(int $questionID)
     {
-        return Options::where('question_id', $questionID);
+        return Options::where('question_id', $questionID)->get();
     }
     public function create(Request $request)
     {
         $fields = $request->validate([
             "option_content" => "required|string",
             "option_value" => "required|boolean",
-            "question_id" => "required|string"
+            "question_id" => "required|integer"
         ]);
 
         $newOption = Options::create([
@@ -35,8 +35,8 @@ class OptionsController extends Controller
         $input = $request->validate([
             "option_id" => "required|integer",
             "option_content" => "required|string",
-            "option_value" => "required|string",
-            "question_id" => "required|string",
+            "option_value" => "required|boolean ",
+            "question_id" => "required|integer",
         ]);
 
         $option->option_id = $input['option_id'];

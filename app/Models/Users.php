@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,16 +23,17 @@ class Users extends Authenticatable
         "status"
     ];
 
-   
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
     public $timestamps = false;
+    protected $primaryKey = "user_id";
+    protected $keyType = "integer";
 
     protected $casts = [
-        "user_id" => "string",
+        "user_id" => "integer",
         "user_game_name" => "string",
         "email" => "string",
         "phone" => "string",
@@ -41,6 +41,6 @@ class Users extends Authenticatable
         "isAdmin" => "boolean",
         "level" => "integer",
         "exp" => "integer",
-        "status" => "boolean"
+        "status" => "integer"
     ];
 }

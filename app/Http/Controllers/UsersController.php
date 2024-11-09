@@ -64,19 +64,25 @@ class UsersController extends Controller
         ]);
 
         //Check email
-        $user = Users::where(["email" => $fields['email'], "status" > -1])->first();
+        $user = Users::where(["email" => $fields['email'], "status" => 0])->first();
 
         //Check password
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Bad creds'
             ], 401);
-        }
+        } else {
+            // Tạo API token cho người dùng
+            $token = $user->createToken('API TOKEN')->plainTextToken;
 
-        return response()->json(
-            $user,
-            200
-        );
+            return response()->json(
+                [
+                    'user' => $user,
+                    'token' => $token
+                ],
+                200
+            );
+        }
     }
     public function phoneNumberLogin(Request $request)
     {
@@ -84,50 +90,57 @@ class UsersController extends Controller
             "phone" => "required|string",
             "password" => "required|string",
         ]);
-
         //Check phone
-        $user = Users::where(["phone" => $fields['phone'], "status" > -1])->first();
+        $user = Users::where(["phone" => $fields['phone'], "status" => 0])->first();
         //Check password
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Bad creds'
             ], 401);
+        } else {
+            // Tạo API token cho người dùng
+            $token = $user->createToken('API TOKEN')->plainTextToken;
+            return response()->json(
+                [
+                    'user' => $user,
+                    'token' => $token
+                ],
+                200
+            );
         }
-
-        return response()->json(
-            $user,
-            200
-        );
     }
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "user_game_name" => "required|string|unique:users,phone",
+            "user_game_name" => "required|string|unique:users,user_game_name",
             "email" => "nullable|string|unique:users,email",
             "phone" => "required|string|unique:users,phone",
             "password" => "required|string",
-            "isAdmin" => "boolean",
-            "level" => "integer",
-            "exp" => "integer",
-            "status" => "required|boolean"
+            "isAdmin" => "required|boolean",
+            "level" => "required|integer",
+            "exp" => "required|integer",
+            "status" => "required|integer"
         ]);
-
         $newUser = Users::create([
             "user_game_name" => $fields['user_game_name'],
             "email" => $fields['email'],
             "phone" => $fields['phone'],
-            "password" => $fields['password'],
+            "password" => bcrypt($fields['password']),
             "isAdmin" => $fields['isAdmin'],
             "level" => $fields['level'],
             "exp" => $fields['exp'],
             "status" => $fields['status'],
         ]);
-
-        return response()->json([], 201);
+        // Tạo API token cho người dùng
+        $token = $newUser->createToken('API TOKEN')->plainTextToken;
+        return response()->json([
+            'user' => $newUser,
+            'token' => $token
+        ], 201);
     }
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
         return response()->json([
             "message" => "Logged out"
         ]);
@@ -138,7 +151,7 @@ class UsersController extends Controller
 
         $input = $request->validate([
             "user_id" => "required|string",
-            "user_game_name" => "required|string|unique:users,phone",
+            "user_game_name" => "required|string|unique:users,user_game_name",
             "email" => "required|string|unique:users,email",
             "phone" => "required|string|unique:users,phone",
             "password" => "required|string",

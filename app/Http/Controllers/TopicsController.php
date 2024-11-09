@@ -22,12 +22,10 @@ class TopicsController extends Controller
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "topic_id" => "required|integer",
-            "topic_name" => "required|string"
+            "topic_name" => "required|string|unique:topics,topic_name"
         ]);
 
         $newTopics = Topics::create([
-            'topic_id' => ($fields['topic_id']),
             'topic_name' => ($fields['topic_name']),
         ]);
 
