@@ -25,7 +25,8 @@ Route::middleware(['auth:sanctum'])->group(function () { // Cần đăng nhập 
         FriendsController::class
     )->group(function () {
         Route::get('/v1/user/friends', 'friendsList');
-        Route::post('/v1/user/add/friend', 'create');
+        Route::post('/v1/user/friends/add', 'create');
+        Route::delete('/v1/user/friends/delete', 'delete');
     });
     //
     Route::controller(
