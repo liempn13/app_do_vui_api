@@ -23,7 +23,10 @@ Route::middleware(['auth:sanctum'])->group(function () { // Cần đăng nhập 
     //
     Route::controller(
         FriendsController::class
-    )->group(function () {});
+    )->group(function () {
+        Route::get('/v1/user/friends', 'friendsList');
+        Route::post('/v1/user/add/friend', 'create');
+    });
     //
     Route::controller(
         QuestionSetsController::class
@@ -36,7 +39,6 @@ Route::middleware(['auth:sanctum'])->group(function () { // Cần đăng nhập 
     });
     Route::controller(TopicsController::class)->group(function () {
         Route::get('/v1/topics', 'index');
-        Route::get('/v1/topic/{id}', '');
         Route::put('/v1/topic/update', 'update');
         Route::post('/v1/topic/create', 'create');
         Route::delete('/v1/topic/delete', 'delete');

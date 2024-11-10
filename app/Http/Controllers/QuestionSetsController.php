@@ -14,7 +14,7 @@ class QuestionSetsController extends Controller
         return QuestionSets::where('topic_id', $topicID)->get();
     }
 
-    public function getQuestionSetDetails(string $id_questionSet)
+    public function getQuestionSetDetails(int $id_questionSet)
     {
         $question_set = DB::table('question_set_details')
 
