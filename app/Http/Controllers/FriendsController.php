@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Friends;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class FriendsController extends Controller
 {
     public function friendsList(int $user)
     {
-        return Friends::where('user_id', $user);
+        return DB::table('friends')
+        // ->join('users', 'friends.friend_id', '=', 'users.user_id')
+            ->join('users', 'users.user_id', '=', 'friends.user_id')
+            ->select('users.*')
+            ->where('users.user_id', $user)->get();
     }
 
     public function create(Request $request)
