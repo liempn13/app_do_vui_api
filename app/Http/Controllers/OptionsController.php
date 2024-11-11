@@ -10,7 +10,7 @@ class OptionsController extends Controller
 {
     public function getOptionsOfQuestion(int $questionID)
     {
-        return Options::where('question_id', $questionID)->get();
+        return Options::where('question_id', $questionID)->inRandomOrder()->get();
     }
     public function create(Request $request)
     {

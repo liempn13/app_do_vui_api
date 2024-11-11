@@ -150,10 +150,10 @@ class UsersController extends Controller
         $user = Users::find($request->user_id);
 
         $input = $request->validate([
-            "user_id" => "required|string",
-            "user_game_name" => "required|string|unique:users,user_game_name",
-            "email" => "required|string|unique:users,email",
-            "phone" => "required|string|unique:users,phone",
+            "user_id" => "required|integer",
+            "user_game_name" => "required|string",
+            "email" => "required|string",
+            "phone" => "required|string",
             "password" => "required|string",
             "isAdmin" => "boolean",
             "level" => "integer",
@@ -171,7 +171,6 @@ class UsersController extends Controller
         $user->exp = $input['exp'];
         $user->status = $input['status'];
         $user->update();
-
         return response()->json(
             $user,
             200

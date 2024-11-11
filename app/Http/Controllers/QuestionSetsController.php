@@ -32,8 +32,7 @@ class QuestionSetsController extends Controller
                 [
                     'question_set_details.question_set_id' => $id_questionSet
                 ],
-            )->inRandomOrder()
-            ->get();
+            )->inRandomOrder()->get();
         return response()->json($question_set, 200);
     }
 
