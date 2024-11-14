@@ -17,19 +17,19 @@ class PlayedHistorys extends Model
         "ID",
         "room_id",
         "user_id",
-        "question_id",
+        "topic_id",
         "score",
         "player_quantity",
         "time"
-    ]; 
+    ];
     protected $casts = [
         "ID" => "integer",
         "room_id" => "integer",
         "user_id" => "integer",
-        "question_id" => "integer",
+        "topic_id" => "integer",
         "score" => "integer",
         "player_quantity" => "integer",
         "time" => "time"
-    ]; 
+    ];
     public $timestamps = false;
 }

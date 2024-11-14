@@ -12,12 +12,14 @@ class Friends extends Model
     protected $primaryKey = "user_id";
     protected $fillable = [
         "user_id",
-        "friends_id"
+        "friends_id",
+        "status"
     ];
     public $timestamps = false;
 
     protected $casts = [
         "user_id"  => "integer",
-        "friends_id"  => "integer"
+        "friends_id"  => "integer",
+        "status" => "integer"
     ];
 }

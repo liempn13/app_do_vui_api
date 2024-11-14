@@ -158,7 +158,7 @@ class UsersController extends Controller
             "isAdmin" => "boolean",
             "level" => "integer",
             "exp" => "integer",
-            "status" => "required|boolean"
+            "status" => "required|integer"
         ]);
 
         $user->user_id = $input['user_id'];
@@ -177,10 +177,25 @@ class UsersController extends Controller
         );
     }
 
-    public function delete(Request $request)
+    public function delete(int $id)
     {
-        $user = Users::find($request->user_id);
-        $user->delete();
-        return response()->json([], 200);
+        $user = Users::find($id);
+        $user->status = -1;
+        $user->update();
+        return response()->json(
+            $user,
+            200
+        );
+    }
+
+    public function unlock(int $id)
+    {
+        $user = Users::find($id);
+        $user->status = 0;
+        $user->update();
+        return response()->json(
+            $user,
+            200
+        );
     }
 }

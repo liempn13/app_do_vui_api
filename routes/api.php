@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FriendsController;
+use App\Http\Controllers\HistoryDetailsController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\PlayedHistorysController;
 use App\Http\Controllers\QuestionsController;
@@ -19,6 +20,8 @@ Route::middleware(['auth:sanctum'])->group(function () { // Cần đăng nhập 
         Route::get('/v1/user/info/{id}', 'getUserInfo'); // lấy ra 1 user
         Route::post('/v1/logout', 'logout');
         Route::put('/v1/user/info/update', 'update');
+        Route::put('/v1/user/delete/{id}', 'delete');
+        Route::put('/v1/user/unlock/{id}', 'unlock');
     });
     //
     Route::controller(
@@ -57,15 +60,20 @@ Route::middleware(['auth:sanctum'])->group(function () { // Cần đăng nhập 
         Route::post('/v1/room/create', 'create');
     });
     Route::controller(PlayedHistorysController::class)->group(function () {
-        Route::get('/v1', 'index');
-        Route::put('/v1', 'update');
-        Route::post('/v1', 'create');
+        Route::get('/v1', '');
+        Route::put('/v1/play/update', 'update');
+        Route::post('/v1/play/save', 'create');
     });
     Route::controller(OptionsController::class)->group(function () {
         Route::get('/v1/options/question/{id}', 'getOptionsOfQuestion');
         Route::put('/v1/option/update', 'update');
         Route::post('/v1/option/create', 'create');
         Route::delete('/v1/option/delete', 'delete');
+    });
+    Route::controller(HistoryDetailsController::class)->group(function () {
+        Route::get('/v1', '');
+        Route::put('/v1/play/details/update', 'update');
+        Route::post('/v1/play/details/save', 'create');
     });
 });
 Route::controller(UsersController::class)->group(function () {

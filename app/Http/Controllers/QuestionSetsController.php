@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\QuestionSetDetails;
 use App\Models\QuestionSets;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -48,6 +49,21 @@ class QuestionSetsController extends Controller
             "topic_id" => $fields['topic_id'],
             "question_set_name" => $fields['question_set_name'],
             "question_quantity" => $fields['question_quantity']
+        ]);
+
+        return response()->json([], 201);
+    }
+
+    public function createDetails(Request $request)
+    {
+        $fields = $request->validate([
+            "question_id" => "required|integer",
+            "question_set_id" => "required|integer"
+        ]);
+
+        $newQuestionSet = QuestionSetDetails::create([
+            "question_id" => $fields['question_id'],
+            "question_set_id" => $fields['question_set_id'],
         ]);
 
         return response()->json([], 201);

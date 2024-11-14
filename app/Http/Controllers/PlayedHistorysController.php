@@ -16,17 +16,17 @@ class PlayedHistorysController extends Controller
 
     public function show(PlayedHistorys $playedHistorys)
     {
-        return PlayedHistorys::findOrFail($playedHistorys['ID']);
+        return PlayedHistorys::findOrFail($playedHistorys->ID);
     }
 
     public function create(Request $request)
     {
         $fields = $request->validate([
-            "room_id" => "string",
-            "user_id" => "required|string",
-            "topic_id" => "required|string",
+            "room_id" => "nullable|integer",
+            "user_id" => "required|integer",
+            "topic_id" => "required|integer",
             "score" => "required|integer",
-            "player_quantity" => "required|integer",
+            "player_quantity" => "integer",
             "time" => "required|time",
         ]);
 
@@ -36,7 +36,7 @@ class PlayedHistorysController extends Controller
             "topic_id" => $fields['topic_id'],
             "score" => $fields['score'],
             "player_quantity" => $fields['player_quantity'],
-            "time" => "required|time",
+            "time" => $fields['time'],
         ]);
 
         return response()->json([], 201);
@@ -47,24 +47,11 @@ class PlayedHistorysController extends Controller
         $playedHistorys = PlayedHistorys::find($request->ID);
 
         $input = $request->validate([
-            "ID" => "string",
-            "room_id" => "string",
-            "user_id" => "required|string",
-            "topic_id" => "required|string",
             "score" => "required|integer",
-            "player_quantity" => "required|integer",
             "time" => "required|time",
-
         ]);
-
-        $playedHistorys->ID = $input['ID'];
-        $playedHistorys->room_id = $input['room_id'];
-        $playedHistorys->user_id = $input['user_id'];
-        $playedHistorys->topic_id = $input['topic_id'];
         $playedHistorys->score = $input['score'];
-        $playedHistorys->player_quantity = $input['player_quantity'];
         $playedHistorys->time = $input['time'];
-
         $playedHistorys->update();
 
         return response()->json([], 200);
@@ -72,9 +59,9 @@ class PlayedHistorysController extends Controller
 
     public function delete(Request $request)
     {
-        $playedHistorys = PlayedHistorys::find($request->ID);
+        $history = PlayedHistorys::find($request->ID);
 
-        $playedHistorys->delete();
+        $history->delete();
 
         return response()->json([], 200);
     }
