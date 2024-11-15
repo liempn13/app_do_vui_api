@@ -41,7 +41,7 @@ class QuestionSetsController extends Controller
     {
         $fields = $request->validate([
             "topic_id" => "required|integer",
-            "question_set_name" => "required|string|unique:question_sets,question_set_name",
+            "question_set_name" => "required|string",
             "question_quantity" => "required|integer"
         ]);
 

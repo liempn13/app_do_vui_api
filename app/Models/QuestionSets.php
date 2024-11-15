@@ -13,15 +13,15 @@ class QuestionSets extends Model
     protected $keyType = "integer";
     protected $fillable = [
         "question_set_id",
-        "question_name",
+        "question_set_name",
         "topic_id",
         "question_quantity"
-    ]; 
+    ];
     protected $casts = [
         "question_set_id" => "integer",
-        "question_name" => "string",
+        "question_set_name" => "string",
         "topic_id" => "integer",
         "question_quantity" => "integer"
-    ]; 
+    ];
     public $timestamps = false;
 }

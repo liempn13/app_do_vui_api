@@ -26,7 +26,7 @@ class RoomsController extends Controller
             "room_code" => "required|string",
             "room_name" => "required|string",
             "creator_id" => "required|integer",
-            "password" => "required|string",
+            "password" => "nullable|string",
             "room_status" => "required|integer"
         ]);
 
@@ -52,7 +52,7 @@ class RoomsController extends Controller
             "room_name" => "required|string",
             "topic_id" => "required|integer",
             "creator_id" => "required|integer",
-            "password" => "required|string",
+            "password" => "nullable|string",
             "room_status" => "required|integer"
         ]);
 
